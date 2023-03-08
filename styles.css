@@ -1,7 +1,46 @@
+.colors > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.color {
+    height: 30px;
+    width: 100px;
+    margin: 10px;
+    border: 2px solid black;
+}
+.selectedColor {
+    border: 5px solid gold;
+}
+#black {
+    background-color: black;
+}
+#white {
+    background-color: white;
+}
+#red {
+    background-color: red;
+}
+#orange {
+    background-color: orange;
+}
+#yellow {
+    background-color: yellow;
+}
+#green {
+    background-color: green;
+}
+#blue {
+    background-color: blue;
+}
+#purple {
+    background-color: purple;
+}
 #etch {
     height: 500px;
     width: 500px;
-    background-color: aliceblue;
+    /*background-color: blue;*/
+    background-image: url(images/cat.jpg);
     display: flex;
     flex-direction: column;
 }
@@ -18,8 +57,23 @@
     width: 100%;
     min-height: 0;
     flex-shrink: 1;
+    background-color: black;
 }
 
 .filled {
-    background-color: black;
+    background-color: transparent;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.buttons > button {
+    width: 100px;
+    padding: 10px;
+}
+
+.selected {
+    background-color: darkgray;
 }
