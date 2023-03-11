@@ -1,3 +1,12 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.slideContainer {
+    display: flex;
+}
 .colors > div {
     display: flex;
     flex-direction: row;
@@ -6,7 +15,7 @@
 .color {
     height: 30px;
     width: 100px;
-    margin: 10px;
+    margin: 5px 10px;
     border: 2px solid black;
 }
 .selectedColor {
@@ -37,8 +46,8 @@
     background-color: purple;
 }
 #etch {
-    height: 500px;
-    width: 500px;
+    height: 400px;
+    width: 400px;
     /*background-color: blue;*/
     background-image: url(images/cat.jpg);
     display: flex;
@@ -57,7 +66,7 @@
     width: 100%;
     min-height: 0;
     flex-shrink: 1;
-    background-color: black;
+    background-color: white;
 }
 
 .filled {
