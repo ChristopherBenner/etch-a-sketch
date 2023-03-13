@@ -1,3 +1,11 @@
+body {
+    background-color: aliceblue;
+}
+h1 {
+    margin: 0;
+    color: blue;
+    font-family: 'Times New Roman', Times, serif;
+}
 .container {
     display: flex;
     flex-direction: column;
@@ -76,6 +84,7 @@
 .buttons {
     display: flex;
     justify-content: flex-start;
+    margin: 5px;
 }
 
 .buttons > button {

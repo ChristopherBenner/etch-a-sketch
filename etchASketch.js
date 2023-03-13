@@ -84,6 +84,7 @@ slider.oninput = function(){
     gridSize = this.value;
     removeGrid();
     drawGrid(gridSize);
+    fill(cellColor)
     checkDraw();
 
 }
@@ -102,6 +103,7 @@ let draw = function(){
     fill(cellColor);
     document.getElementById(chosenColor).classList.remove('selectedColor');
     document.getElementById('black').classList.add('selectedColor');
+    document.getElementById('title').textContent = 'Etch-A-Sketch';
     document.querySelector('.colors').style.display = 'block';
     document.querySelector('#etch').style.backgroundImage = "none";
     backgroundColor = 'black';
@@ -113,12 +115,14 @@ let scratch = function (){
     /* Set background color of each cell to transparent to reveal the picture behind */
     cellColor = 'darkgray';
     fill(cellColor);
+    document.getElementById('title').textContent = 'Scratch Off';
     document.querySelector('.colors').style.display = 'none';
     document.querySelector('#etch').style.backgroundImage = "url('images/cat.jpg')";
     backgroundColor = 'transparent';
 };
 
 let puzzle = function (){
+    document.getElementById('title').textContent = 'Puzzle';
     /* Show the color options and make the background white */
     /* Add clues for which colors go where -> The clues should be color coded
     and include the number of each color that should be included */
