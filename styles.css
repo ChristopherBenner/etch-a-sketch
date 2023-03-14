@@ -68,8 +68,7 @@ h1 {
 #colClues {
     /*display: flex;*/
     display: none;
-    position: relative;
-    /*left: 50px;*/
+    align-self: flex-end;
     width: 400px;
     height: 100px;
     background-color: gray;
