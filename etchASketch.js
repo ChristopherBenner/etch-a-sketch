@@ -45,7 +45,7 @@ let checkDraw = function(){
     let cells = document.querySelectorAll('.cell');
     let cellId;
     cells.forEach((square) => {
-        square.addEventListener('mouseleave', function(){
+        square.addEventListener('mouseenter', function(){
         /* only want to draw if the mouse is clicked */
         if (buttonDown) {
             if (mode === 'puzzle'){
@@ -107,8 +107,7 @@ slider.oninput = function(){
     drawGrid(gridSize);
     fill(cellColor)
     checkDraw();
-
-}
+};
 
 let fill = function(cellColor){
     let cells = document.querySelectorAll('.cell');
