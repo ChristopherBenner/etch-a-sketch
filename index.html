@@ -13,6 +13,15 @@
             <p>Grid Size: <span id="dimensions">16 x 16</span></p>
             <input type="range" min="1" max="64" value="16" id="gridSize">
         </div>
+        <div class="instructions">
+            <button class="instructionButton" id="showInstructions" onclick="showInstructions()">Instructions</button>
+            <div class="instructionBox">
+                <p>Fill in the grid according the corresponding clues</p>
+                <p>Each number in a row or column indicates the number of cells in a row that should be filled</p>
+                <p>Be careful though. Not all squares should be filled in.</p>
+                <button class="instructionButton" onclick="hideInstructions()">Close</button>
+            </div>
+        </div>
         <div class="colors">
             <div>
                 <div class="color selectedColor" id="black"></div>

@@ -95,3 +95,24 @@ h1 {
 .selected {
     background-color: darkgray;
 }
+
+.instructions {
+    display: none;
+    margin: 10px;
+}
+/*
+#showInstructions {
+    display: none;
+}*/
+
+.instructionBox {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    height: 200px;
+    width: 380px;
+    padding: 10px;
+    margin: 10px;
+    background-color: lightyellow;
+
+}

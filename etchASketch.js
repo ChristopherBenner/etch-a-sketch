@@ -1,12 +1,17 @@
-let gridSize = 16; /* Change to change the number of grid squares */
+let gridSize = 16;
+const defaultGridSize = 16; /* Change to change the number of grid squares */
 const gridWidth = 400; /* width of grid in pixels */
 let backgroundColor = 'black';
 const etch = document.getElementById('etch');
 let buttonDown = false;
 let row;
 let cell;
+let filledCells;
+let selectedCells;
+let chosenCells;
 let mode = 'draw';
 let chosenColor = 'black';
+
 
 let drawGrid = function(gridSize){
     for (let i = 0; i < gridSize; i++){
@@ -15,6 +20,7 @@ let drawGrid = function(gridSize){
         for (let j = 0; j < gridSize; j++){
             cell = document.createElement('div');
             cell.className = 'cell';
+            cell.id = `a${i}${j}`;
             row.appendChild(cell);
         }
         etch.appendChild(row);
@@ -35,15 +41,30 @@ drawGrid(gridSize);
 // Removal of the old might have to be part of another function
 
 let checkDraw = function(){
+    // Want to check to see if a cell has been clicked or entered
     let cells = document.querySelectorAll('.cell');
+    let cellId;
     cells.forEach((square) => {
         square.addEventListener('mouseenter', function(){
         /* only want to draw if the mouse is clicked */
         if (buttonDown) {
+            if (mode === 'puzzle'){
+                cellId = String(square.id);
+                checkCell(cellId);
+            } else {
             square.style.background = backgroundColor;
-            console.log("Changing the color of this square");
+            }
         };
     });
+        square.addEventListener('click', function(){
+            console.log(mode);
+            if (mode === 'puzzle'){
+                cellId = String(square.id);
+                checkCell(cellId);
+            } else {
+            square.style.background = backgroundColor;
+            }
+        });
 });
 };
 checkDraw();
@@ -66,7 +87,7 @@ colors.forEach((color) => {
     });
 })
 
-let buttons = document.querySelectorAll('button');
+let buttons = document.querySelectorAll('.buttons > button');
 buttons.forEach((button => {
     button.addEventListener('click', () =>{
         document.getElementById(mode).classList.remove('selected');
@@ -96,35 +117,159 @@ let fill = function(cellColor){
     });
 }
 
+let reset = function(gridSize, cellColor){
+    removeGrid();
+    drawGrid(gridSize);
+    fill(cellColor);
+    checkDraw();
+    document.querySelector('.slideContainer').style.display = 'flex';
+    document.querySelector('#gridSize').value = gridSize;
+    document.getElementById('dimensions').innerHTML = `${gridSize} x ${gridSize}`; 
+}
 
 let draw = function(){
     /* Show the color options and make the background white */
     cellColor = 'white';
-    fill(cellColor);
+    gridSize = defaultGridSize;
+    reset(gridSize,cellColor);
+    //fill(cellColor);
     document.getElementById(chosenColor).classList.remove('selectedColor');
     document.getElementById('black').classList.add('selectedColor');
     document.getElementById('title').textContent = 'Etch-A-Sketch';
     document.querySelector('.colors').style.display = 'block';
     document.querySelector('#etch').style.backgroundImage = "none";
+    document.querySelector('.instructions').style.display = 'none';
     backgroundColor = 'black';
 };
 
 let scratch = function (){
-    /* Hide the color options. Add a background image. Cover the image in gray squares */
-    /* Add an animation to scratch off the card revealing the image behind */
     /* Set background color of each cell to transparent to reveal the picture behind */
     cellColor = 'darkgray';
-    fill(cellColor);
+    gridSize = defaultGridSize;
+    reset(gridSize,cellColor);
     document.getElementById('title').textContent = 'Scratch Off';
     document.querySelector('.colors').style.display = 'none';
     document.querySelector('#etch').style.backgroundImage = "url('images/cat.jpg')";
+    document.querySelector('.instructions').style.display = 'none';
     backgroundColor = 'transparent';
+
 };
+
+let showInstructions = function(){
+    document.querySelector('.instructionBox').style.display = 'flex';
+    document.querySelector('#showInstructions').style.display = 'none';
+};
+
+let hideInstructions = function(){
+    document.querySelector('.instructionBox').style.display = 'none';
+    document.querySelector('#showInstructions').style.display = 'block';
+}
 
 let puzzle = function (){
     document.getElementById('title').textContent = 'Puzzle';
+    let puzzleSize = array.length;
+    cellColor = 'white';
+    gridSize = puzzleSize;
+    reset(gridSize,cellColor);
+    document.querySelector('.slideContainer').style.display = 'none';
+    document.querySelector('.colors').style.display = 'none';
+    document.querySelector('.instructions').style.display = 'block';
+    filledCells = countCells();
+    selectedCells = 0;
+    chosenCells = [];
     /* Show the color options and make the background white */
     /* Add clues for which colors go where -> The clues should be color coded
     and include the number of each color that should be included */
     /* Add animation to show when a color is incorrectly placed */
 };
+
+// Create the basic puzzle shape of an airplane
+let array = [[0,0,1,0,0],
+            [0,1,1,1,0],
+            [1,1,1,1,1],
+            [0,0,1,0,0],
+            [0,1,1,1,0]];
+
+
+let getRowClues = function(array){
+    let rows = [];
+    let clues;
+    let count;
+    for (let rowPos = 0; rowPos <  array.length; rowPos++){
+        clues = [];
+        count = 0;
+        for (let colPos = 0; colPos < array[0].length; colPos++){
+            if (array[rowPos][colPos] === 1){
+                count++;
+            };
+            if ((array[rowPos][colPos] === 0 && count > 0) || (array[rowPos][colPos] === 1 && colPos === array[0].length - 1)){
+                clues.push(count);
+                count = 0;
+            };
+        };
+        count = 0;
+        rows.push(clues);
+        clues = [];
+    };
+    return rows;
+};
+
+let getColumnsClues = function(array){
+    let columns = [];
+    let clues;
+    let count;
+    for (let colPos = 0; colPos <  array[0].length; colPos++){
+        clues = [];
+        count = 0;
+        for (let rowPos = 0; rowPos < array.length; rowPos++){
+            if (array[rowPos][colPos] === 1){
+                count++;
+            };
+            if ((array[rowPos][colPos] === 0 && count > 0) || (array[rowPos][colPos] === 1 && rowPos === array.length - 1)){
+                clues.push(count);
+                count = 0;
+            };
+        };
+        count = 0;
+        columns.push(clues);
+        clues = [];
+    };
+    return columns;
+};
+
+let checkCell = function(cellId){
+    // cellId is in the form of a[row][col] as a string
+    let row = cellId[1];
+    let col = cellId[2];
+    let color;
+    if (array[row][col] === 1){
+        color = 'black';
+        if (!chosenCells.includes(cellId)){
+            chosenCells.push(cellId);
+            selectedCells++;
+        }
+    } else {
+        color = 'red';
+    }
+    document.getElementById(cellId).style.background = color;
+    checkWin(selectedCells);
+};
+
+let checkWin = function(selectedCells){
+    if (selectedCells === filledCells){
+        alert('Congratulations, you win! You found the airplane.');
+    }
+}
+
+let countCells = function(){
+    let filledCells = 0;
+    for (let i = 0; i < array.length; i++){
+        for (let j = 0; j < array[0].length; j++){
+            if (array[i][j] === 1){
+                filledCells++;
+            };
+        };
+    };
+    console.log(filledCells);
+    return filledCells;
+}
