@@ -32,7 +32,7 @@ let removeGrid = function(){
     rows.forEach((gridRow) => {
         gridRow.remove();
     });
-    console.log("Removed the old grid");
+    //console.log("Removed the old grid");
 };
 drawGrid(gridSize);
 
@@ -45,7 +45,7 @@ let checkDraw = function(){
     let cells = document.querySelectorAll('.cell');
     let cellId;
     cells.forEach((square) => {
-        square.addEventListener('mouseenter', function(){
+        square.addEventListener('mouseleave', function(){
         /* only want to draw if the mouse is clicked */
         if (buttonDown) {
             if (mode === 'puzzle'){
@@ -125,6 +125,8 @@ let reset = function(gridSize, cellColor){
     document.querySelector('.slideContainer').style.display = 'flex';
     document.querySelector('#gridSize').value = gridSize;
     document.getElementById('dimensions').innerHTML = `${gridSize} x ${gridSize}`; 
+    document.getElementById('colClues').style.display = 'none';
+    document.getElementById('rowClues').style.display = 'none';
 }
 
 let draw = function(){
@@ -177,6 +179,11 @@ let puzzle = function (){
     filledCells = countCells();
     selectedCells = 0;
     chosenCells = [];
+    document.getElementById('colClues').style.display = 'flex';
+    document.getElementById('rowClues').style.display = 'block';
+    displayRowClues();
+    displayColClues();
+    resetClues();
     /* Show the color options and make the background white */
     /* Add clues for which colors go where -> The clues should be color coded
     and include the number of each color that should be included */
@@ -211,10 +218,52 @@ let getRowClues = function(array){
         rows.push(clues);
         clues = [];
     };
+    console.log(rows);
     return rows;
 };
 
-let getColumnsClues = function(array){
+let displayRowClues = function(){
+    let rowClue = '';
+    let rowClues;
+    let clue;
+    let rows = getRowClues(array);
+    for (let row = 0; row < rows.length; row++){
+        rowClue = rows[row].join(' ');
+        console.log(rowClue);
+        clue = document.createElement('div');
+        clue.textContent = rowClue;
+        rowClues = document.getElementById('rowClues');
+        rowClues.appendChild(clue);
+        rowClue = 0;
+    };   
+};
+// Change to columns
+let displayColClues = function(){
+    let colClue = '';
+    let colClues;
+    let clue;
+    let cols = getColumnClues(array);
+    for (let col = 0; col < cols.length; col++){
+        colClue = cols[col].join('\r\n');
+        console.log(colClue);
+        clue = document.createElement('div');
+        clue.textContent = colClue;
+        colClues = document.getElementById('colClues');
+        colClues.appendChild(clue);
+        colClue = 0;
+    };   
+};
+
+let resetClues = function(){
+    let clues = document.querySelectorAll('.clues > div');
+    clues.forEach((clue) => {
+        clue.remove();
+    });
+    displayRowClues();
+    displayColClues();
+}
+
+let getColumnClues = function(array){
     let columns = [];
     let clues;
     let count;
@@ -252,7 +301,7 @@ let checkCell = function(cellId){
         color = 'red';
     }
     document.getElementById(cellId).style.background = color;
-    checkWin(selectedCells);
+    if (array[row][col] === 1){checkWin(selectedCells)};
 };
 
 let checkWin = function(selectedCells){

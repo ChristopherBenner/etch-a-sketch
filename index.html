@@ -36,7 +36,13 @@
                 <div class="color" id="purple"></div>
             </div>
         </div>
-        <div id="etch" onmousedown="mouseDown()" onmouseup="mouseUp()"></div>
+        <div class="innerContainer">
+            <div class="clues" id="colClues"></div>
+            <div class="display">
+                <div class="clues" id="rowClues"></div>
+                <div id="etch" onmousedown="mouseDown()" onmouseup="mouseUp()"></div>
+            </div>
+        </div>
         <div class="buttons">
             <button class="selected" id="draw" onclick="draw()">Draw</button>
             <button id="scratch" onclick="scratch()">Scratch Off</button>
